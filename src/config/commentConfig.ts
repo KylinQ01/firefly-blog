@@ -25,7 +25,7 @@ export const commentConfig: CommentConfig = {
 		// waline 后端服务地址
 		serverURL: "https://waline.vercel.app",
 		// 设置 Waline 评论系统语言
-		lang: "zh-CN",
+		lang: "en",
 		// 设置 Waline 评论系统表情地址
 		emoji: [
 			"https://unpkg.com/@waline/emojis@1.4.0/weibo",
@@ -62,15 +62,15 @@ export const commentConfig: CommentConfig = {
 		// 获取 Giscus 评论系统分类ID
 		categoryId: "DIC_kwDOTECaxM4C_0Rc",
 		// 获取 Giscus 评论系统映射方式
-		mapping: "title",
+		mapping: "pathname",
 		// 获取 Giscus 评论系统严格模式
 		strict: "0",
 		// 获取 Giscus 评论系统反应功能
 		reactionsEnabled: "1",
 		// 获取 Giscus 评论系统元数据功能
-		emitMetadata: "1",
+		emitMetadata: "0",
 		// 获取 Giscus 评论系统输入位置
-		inputPosition: "top",
+		inputPosition: "bottom",
 		// 获取 Giscus 评论系统语言
 		lang: "zh-CN",
 		// 获取 Giscus 评论系统加载方式
