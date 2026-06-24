@@ -22,6 +22,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
+	links.push(LinkPresets.Moments);
 	links.push(LinkPresets.Friends);
 	links.push(LinkPresets.Guestbook);
 
@@ -87,6 +88,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		name: "标签",
 		url: "/tags/",
 		icon: "material-symbols:tag-rounded",
+	},
+	Moments: {
+		name: "动态",
+		url: "/moments/",
+		icon: "material-symbols:tips-and-updates",
+		pageKey: "moments",
 	},
 	Friends: {
 		name: "友链",

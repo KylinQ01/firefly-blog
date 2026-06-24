@@ -1,0 +1,84 @@
+---
+import { Icon } from "astro-icon/components";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedMomentsList } from "@/utils/content-utils";
+import { url } from "@/utils/url-utils";
+
+const moments = await getSortedMomentsList();
+---
+
+<MainGridLayout title="碎碎念" description="记录日常、灵感和游戏时刻的小动态。">
+  <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
+    <div class="card-base z-10 px-6 md:px-9 py-6 relative w-full">
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70">
+            <Icon is:inline name="material-symbols:tips-and-updates" class="text-[1.5rem]"></Icon>
+          </div>
+          <div class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+            碎碎念
+          </div>
+        </div>
+        <p class="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          这里记录一些日常心情、AI 折腾、游戏时刻和灵感碎片。
+        </p>
+      </div>
+
+      {moments.length > 0 ? (
+        <div class="space-y-4">
+          {moments.map((moment) => (
+            <article class="rounded-2xl border border-black/5 bg-white/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <div>
+                  {moment.data.title && (
+                    <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                      {moment.data.title}
+                    </h2>
+                  )}
+                  <div class="text-sm text-neutral-500 dark:text-neutral-400">
+                    {moment.data.published.toLocaleDateString("zh-CN", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div class="prose prose-neutral dark:prose-invert max-w-none text-sm leading-7">
+                {moment.body}
+              </div>
+
+              {moment.data.images && moment.data.images.length > 0 && (
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                  {moment.data.images.map((image) => (
+                    <a href={url(image)} target="_blank" rel="noopener noreferrer" class="overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
+                      <img src={url(image)} alt={moment.data.title || "动态配图"} class="w-full h-auto object-cover transition-transform duration-300 hover:scale-[1.02]" loading="lazy" />
+                    </a>
+                  ))}
+                </div>
+              )}
+
+              {moment.data.tags && moment.data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-4">
+                  {moment.data.tags.map((tag) => (
+                    <span class="rounded-full bg-(--primary)/10 px-3 py-1 text-xs font-medium text-(--primary)">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16 text-neutral-500 dark:text-neutral-500">
+          <p class="text-base mb-2">这里暂时还没有动态。</p>
+          <p class="text-sm">等我有了新的心情和灵感，会第一时间记录在这里。</p>
+        </div>
+      )}
+    </div>
+  </div>
+</MainGridLayout>

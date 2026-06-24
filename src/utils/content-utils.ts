@@ -22,6 +22,18 @@ async function getRawSortedPosts() {
 	return sorted;
 }
 
+async function getRawSortedMoments() {
+	const allMoments = await getCollection("moments", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+
+	return allMoments.sort((a, b) => {
+		const dateA = new Date(a.data.published);
+		const dateB = new Date(b.data.published);
+		return dateA > dateB ? -1 : 1;
+	});
+}
+
 export async function getSortedPosts() {
 	const sorted = await getRawSortedPosts();
 
@@ -50,6 +62,22 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 	}));
 
 	return sortedPostsList;
+}
+
+export type MomentForList = {
+	id: string;
+	body: string;
+	data: CollectionEntry<"moments">["data"];
+};
+
+export async function getSortedMomentsList(): Promise<MomentForList[]> {
+	const sortedFullMoments = await getRawSortedMoments();
+
+	return sortedFullMoments.map((moment) => ({
+		id: moment.id,
+		body: moment.body,
+		data: moment.data,
+	}));
 }
 export type Tag = {
 	name: string;

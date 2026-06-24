@@ -31,6 +31,18 @@ const postsCollection = defineCollection({
 	}),
 });
 
+const momentsCollection = defineCollection({
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/moments" }),
+	schema: z.object({
+		title: z.string().optional().default(""),
+		published: z.date(),
+		updated: z.date().optional(),
+		draft: z.boolean().optional().default(false),
+		tags: z.array(z.string()).optional().default([]),
+		images: z.array(z.string()).optional().default([]),
+	}),
+});
+
 const specCollection = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/spec" }),
 	schema: z.object({}),
@@ -38,5 +50,6 @@ const specCollection = defineCollection({
 
 export const collections = {
 	posts: postsCollection,
+	moments: momentsCollection,
 	spec: specCollection,
 };
