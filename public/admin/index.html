@@ -14,6 +14,20 @@
     </style>
   </head>
   <body>
+    <script>
+      if (!window.crypto) {
+        window.crypto = {};
+      }
+      if (!window.crypto.randomUUID) {
+        window.crypto.randomUUID = function () {
+          return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+            const randomValue = (Math.random() * 16) | 0;
+            const normalizedValue = c === "x" ? randomValue : (randomValue & 0x3) | 0x8;
+            return normalizedValue.toString(16);
+          });
+        };
+      }
+    </script>
     <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
   </body>
 </html>
