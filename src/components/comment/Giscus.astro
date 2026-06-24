@@ -8,11 +8,20 @@ if (!commentConfig?.giscus) {
 const giscus = commentConfig.giscus;
 const lightTheme = "light";
 const darkTheme = "dark";
+
+interface Props {
+	mapping?: string;
+	term?: string;
+}
+
+const { mapping, term } = Astro.props as Props;
+const resolvedMapping = mapping || giscus.mapping;
+const resolvedTerm = term || "";
 ---
 
 <script is:inline type="module" src="https://esm.sh/giscus"></script>
 
-<!-- 
+<!--
   Giscus 官方Web Component用法，兼容Astro静态输出，无需import包，无需NPM依赖！
   参考：https://giscus.app/ 详情配置说明
 -->
@@ -22,7 +31,8 @@ const darkTheme = "dark";
   repoId={giscus.repoId}
   category={giscus.category}
   categoryId={giscus.categoryId}
-  mapping={giscus.mapping}
+  mapping={resolvedMapping}
+  term={resolvedTerm}
   strict={giscus.strict}
   reactionsEnabled={giscus.reactionsEnabled}
   emitMetadata={giscus.emitMetadata}

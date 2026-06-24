@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from "astro:content";
+import Giscus from "@components/comment/Giscus.astro";
 import Comment from "@components/comment/index.astro";
 import Markdown from "@components/common/Markdown.astro";
 import { Icon } from "astro-icon/components";
@@ -23,6 +24,7 @@ const { Content } = await render(guestbookPost);
 
 // 检查评论系统是否启用
 const isCommentEnabled = commentConfig?.type && commentConfig.type !== "none";
+const useFixedGuestbookDiscussion = commentConfig?.type === "giscus";
 
 // 页面标题和描述
 const title = i18n(I18nKey.guestbook);
@@ -50,7 +52,7 @@ const description = i18n(I18nKey.guestbookDescription);
           </p>
         )}
       </div>
-      
+
       <Markdown class="mt-2">
         <Content />
       </Markdown>
@@ -60,7 +62,29 @@ const description = i18n(I18nKey.guestbookDescription);
   <!-- 评论区 -->
   <div class="mt-4">
     {isCommentEnabled ? (
-      <Comment post={guestbookPost} customPath="/guestbook/" />
+      useFixedGuestbookDiscussion ? (
+        <div id="post-comments" class="card-base p-8 mb-6 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="50" r="40" fill="currentColor" class="text-(--primary)" />
+              <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="2" class="text-(--primary)" />
+              <circle cx="50" cy="50" r="10" fill="currentColor" class="text-(--primary)" />
+            </svg>
+          </div>
+          <div class="relative z-10 mb-6">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-1 h-6 bg-linear-to-b from-(--primary) to-transparent rounded-full"></div>
+              <h3 class="text-xl font-bold text-(--btn-content)">{i18n(I18nKey.commentSection)}</h3>
+            </div>
+            <p class="text-sm text-(--content-meta) ml-4">{i18n(I18nKey.commentSubtitle)}</p>
+          </div>
+          <div class="relative z-10 pl-2 pr-2">
+            <Giscus mapping="specific" term="guestbook" />
+          </div>
+        </div>
+      ) : (
+        <Comment post={guestbookPost} customPath="/guestbook/" />
+      )
     ) : (
       <div class="card-base p-8 mb-6 relative overflow-hidden">
         <div class="text-center py-8 text-(--content-meta)">
