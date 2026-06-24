@@ -54,49 +54,49 @@
     99: { text: "大冰雹雷暴 ⛈️", icon: "⛈️" },
   };
 
-  async function getCityByCoords(lat, lon, fallbackCity = "未知地区") {
-    try {
-      const resp = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=zh`,
-      );
-      if (!resp.ok) return fallbackCity;
-      const data = await resp.json();
-      if (data && data.address) {
-        const addr = data.address;
-        return (
-          cityNameMap[addr.city] ||
-          cityNameMap[addr.town] ||
-          cityNameMap[addr.county] ||
-          cityNameMap[addr.state] ||
-          addr.city ||
-          addr.town ||
-          addr.county ||
-          addr.state ||
-          cityNameMap[data.name] ||
-          data.name ||
-          fallbackCity
-        );
-      }
-      return cityNameMap[data?.name] || data?.name || fallbackCity;
-    } catch {}
-    return fallbackCity;
+  function inferCityByCoords(lat, lon) {
+    if (lat > 22.8 && lat < 23.3 && lon > 112.9 && lon < 113.4) return "佛山";
+    if (lat > 22.4 && lat < 23.4 && lon > 113.0 && lon < 114.1) return "广州";
+    if (lat > 22.4 && lat < 22.9 && lon > 113.7 && lon < 114.3) return "深圳";
+    if (lat > 39.4 && lat < 41.1 && lon > 115.7 && lon < 117.4) return "北京";
+    return "";
   }
 
-  async function fetchWeather(lat, lon, fallbackCity = "未知地区") {
+  async function getCityByCoords(lat, lon, fallbackCity = "") {
+    const inferredCity = inferCityByCoords(lat, lon);
     try {
-      let city = cityNameMap[fallbackCity] || fallbackCity;
-      try {
-        city = await getCityByCoords(lat, lon, cityNameMap[fallbackCity] || fallbackCity);
-      } catch {}
-      if (!city || city === "未知地区") {
-        if (lat > 22.5 && lat < 23.6 && lon > 112.8 && lon < 113.6) {
-          city = "佛山";
-        } else if (lat > 22.4 && lat < 23.4 && lon > 113.0 && lon < 114.1) {
-          city = "广州";
-        } else {
-          city = cityNameMap[fallbackCity] || fallbackCity || "北京 (默认)";
-        }
-      }
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=10&accept-language=zh-CN`,
+      );
+      if (!resp.ok) return inferredCity || fallbackCity || "未知地区";
+      const data = await resp.json();
+      const addr = data?.address || {};
+      const rawCity =
+        addr.city ||
+        addr.city_district ||
+        addr.town ||
+        addr.county ||
+        addr.state_district ||
+        addr.state ||
+        data?.name ||
+        "";
+
+      return (
+        cityNameMap[rawCity] ||
+        rawCity ||
+        inferredCity ||
+        cityNameMap[fallbackCity] ||
+        fallbackCity ||
+        "未知地区"
+      );
+    } catch {
+      return inferredCity || cityNameMap[fallbackCity] || fallbackCity || "未知地区";
+    }
+  }
+
+  async function fetchWeather(lat, lon, fallbackCity = "") {
+    try {
+      const city = await getCityByCoords(lat, lon, fallbackCity);
 
       const resp = await fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,visibility&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=4`,
@@ -151,25 +151,25 @@
       if (!ipResp.ok) throw new Error(`ip http ${ipResp.status}`);
       const ipData = await ipResp.json();
       if (ipData.latitude && ipData.longitude) {
-        const rawCity = ipData.city || ipData.region || "未知地区";
-        const fallbackCity = cityNameMap[rawCity] || rawCity;
+        const rawCity = ipData.city || ipData.region || "";
+        const fallbackCity = cityNameMap[rawCity] || rawCity || inferCityByCoords(ipData.latitude, ipData.longitude);
         await fetchWeather(ipData.latitude, ipData.longitude, fallbackCity);
         return;
       }
     } catch {}
-    await fetchWeather(39.9, 116.4, "北京 (默认)");
+    await fetchWeather(39.9, 116.4, "北京");
   }
 
   onMount(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
-          await fetchWeather(pos.coords.latitude, pos.coords.longitude);
+          await fetchWeather(pos.coords.latitude, pos.coords.longitude, "");
         },
         async () => {
           await fetchWeatherByIP();
         },
-        { timeout: 5000 },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 },
       );
     } else {
       fetchWeatherByIP();
