@@ -66,14 +66,19 @@ if (footerConfig.enable) {
         href="https://github.com/CuteLeaf/Firefly">Firefly</a
       >
     </div>
-    <!-- 访客计数器 -->
-    <div id="busuanzi_container_site_uv" class="m-0.5 flex gap-2 justify-center flex-wrap text-xs text-neutral-400 dark:text-neutral-500">
+    <div id="visitor-counter" class="m-0.5 flex gap-2 justify-center flex-wrap text-xs text-neutral-400 dark:text-neutral-500">
       <span>您是第</span>
-      <span id="busuanzi_value_site_uv">--</span>
+      <span id="busuanzi_value_site_uv" style="font-weight:600;color:var(--primary)">--</span>
       <span>位来访者</span>
     </div>
   </div>
 </div>
 
-<!-- 不蒜子访客计数器 -->
-<script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
+<script is:inline>
+(function() {
+  var b = document.createElement("script");
+  b.src = "https://busuanzi.icodeq.com/busuanzi.pure.mini.js";
+  b.async = true;
+  document.head.appendChild(b);
+})();
+</script>
