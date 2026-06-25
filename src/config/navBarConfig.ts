@@ -33,6 +33,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		children: [
 			LinkPresets.Gallery,
 			LinkPresets.Anime,
+			LinkPresets.Play,
+			LinkPresets.Type,
 			LinkPresets.Bangumi,
 		],
 	});
@@ -135,6 +137,18 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		url: "/anime/",
 		icon: "material-symbols:live-tv",
 		pageKey: "anime",
+	},
+	Play: {
+		name: "小游戏",
+		url: "/play/",
+		icon: "material-symbols:sports-esports",
+		pageKey: "play",
+	},
+	Type: {
+		name: "打字测试",
+		url: "/type/",
+		icon: "material-symbols:keyboard",
+		pageKey: "type",
 	},
 };
 
