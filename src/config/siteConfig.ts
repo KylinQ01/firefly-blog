@@ -54,15 +54,11 @@ export const siteConfig: SiteConfig = {
 
 	// Favicon 配置
 	favicon: [
-		{
-			// 图标文件路径
-			src: "/favicon/favicon.ico",
-			// 可选，指定主题 'light' | 'dark'
-			// theme: "light",
-			// 可选，图标大小
-			// sizes: "32x32",
-		},
-	],
+			{
+				// 图标文件路径
+				src: "/favicon/logo.jpg",
+			},
+		],
 
 	// 导航栏配置
 	navbar: {
@@ -104,6 +100,8 @@ export const siteConfig: SiteConfig = {
 		sponsor: true,
 		// 留言板页面开关，需要配置评论系统
 		guestbook: true,
+		// 碎碎念动态页面开关
+		moments: true,
 		// 番组计划页面开关，含追番、游戏、书籍和音乐
 		bangumi: true,
 		// 相册页面开关

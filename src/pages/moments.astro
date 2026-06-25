@@ -1,7 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { getSortedMomentsList } from "@/utils/content-utils";
 import { url } from "@/utils/url-utils";
@@ -47,9 +45,11 @@ const moments = await getSortedMomentsList();
                 </div>
               </div>
 
-              <div class="prose prose-neutral dark:prose-invert max-w-none text-sm leading-7">
-                {moment.body}
-              </div>
+              {moment.body && (
+                <div class="prose prose-neutral dark:prose-invert max-w-none text-sm leading-7 whitespace-pre-wrap">
+                  {moment.body}
+                </div>
+              )}
 
               {moment.data.images && moment.data.images.length > 0 && (
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">

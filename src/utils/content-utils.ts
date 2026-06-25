@@ -66,7 +66,7 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 
 export type MomentForList = {
 	id: string;
-	body: string;
+	body: string | undefined;
 	data: CollectionEntry<"moments">["data"];
 };
 
