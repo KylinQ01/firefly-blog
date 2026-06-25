@@ -63,9 +63,9 @@ const commentPageUrl = "/guestbook/";
                   )}
 
                   {moment.data.images && moment.data.images.length > 0 && (
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 moment-images">
                       {moment.data.images.map((image) => (
-                        <a href={url(image)} target="_blank" rel="noopener noreferrer" class="overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
+                        <a href={url(image)} data-fancybox="gallery-moments" data-caption={moment.data.title || "动态配图"} class="overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
                           <img src={url(image)} alt={moment.data.title || "动态配图"} class="w-full h-auto object-cover transition-transform duration-300 hover:scale-[1.02]" loading="lazy" />
                         </a>
                       ))}

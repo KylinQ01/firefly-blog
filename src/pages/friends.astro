@@ -138,7 +138,7 @@ const description =
               <div class="grow min-w-0 flex flex-col justify-center gap-0.5">
                 <div class="flex items-center justify-between">
                   <div class="font-bold text-base text-neutral-900 dark:text-neutral-100 group-hover:text-(--primary) transition-colors truncate pr-4">
-                    {item.title}
+                    {item.title}<span class="status-dot ml-2 inline-block size-2 shrink-0 rounded-full bg-neutral-300 dark:bg-neutral-600" data-url={item.siteurl} title="检测中..."></span>
                   </div>
                   {/* 外部链接图标 */}
                   <Icon is:inline
@@ -285,6 +285,27 @@ const description =
       }
       customElements.define("friend-filter", FriendFilter);
     }
+  </script>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const dots = document.querySelectorAll(".status-dot");
+      dots.forEach((dot) => {
+        const url = dot.getAttribute("data-url");
+        if (!url) return;
+        fetch(url, { mode: "no-cors", signal: AbortSignal.timeout(8000) })
+          .then(() => {
+            dot.classList.remove("bg-neutral-300", "dark:bg-neutral-600");
+            dot.classList.add("bg-green-500", "dark:bg-green-400");
+            dot.setAttribute("title", "在线");
+          })
+          .catch(() => {
+            dot.classList.remove("bg-neutral-300", "dark:bg-neutral-600");
+            dot.classList.add("bg-red-400", "dark:bg-red-500");
+            dot.setAttribute("title", "可能离线");
+          });
+      });
+    });
   </script>
 
   <style is:global>

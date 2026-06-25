@@ -1,48 +1,58 @@
 ---
 import { Icon } from "astro-icon/components";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
-import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { url } from "@/utils/url-utils";
 ---
 
-<MainGridLayout title={i18n(I18nKey.notFound)} description={i18n(I18nKey.notFoundDescription)}>
+<MainGridLayout title="404" description="页面未找到">
     <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-96">
         <div class="card-base z-10 px-9 py-12 relative w-full flex flex-col items-center justify-center text-center">
-            <!-- 404 大号数字 -->
-            <div class="text-8xl md:text-9xl font-bold text-(--primary) opacity-20 mb-4">
-                {i18n(I18nKey.notFound)}
+            <div class="text-8xl md:text-9xl font-black text-(--primary)/15 mb-2 select-none">
+                404
             </div>
-            
-            <!-- 404 图标 -->
+
             <div class="mb-6">
-                <Icon is:inline name="material-symbols:error-outline" class="text-6xl text-(--primary)" />
+                <Icon is:inline name="material-symbols:signal-disconnected" class="text-5xl text-(--primary)/70" />
             </div>
-            
-            <!-- 标题 -->
-            <div class="text-3xl md:text-4xl font-bold mb-4 text-90">
-                {i18n(I18nKey.notFoundTitle)}
+
+            <div class="text-2xl md:text-3xl font-bold mb-3 text-neutral-800 dark:text-neutral-100">
+                哎呀，页面走丢了
             </div>
-            
-            <!-- 描述 -->
-            <p class="text-lg text-75 mb-8 max-w-md">
-                {i18n(I18nKey.notFoundDescription)}
+
+            <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-8 max-w-sm leading-relaxed">
+                你访问的页面可能被风吹走了、被我删掉了，或者从来没有存在过。
+                <br />
+                但不用担心，从这里可以找到回家的路。
             </p>
-            
-            <!-- 返回首页按钮 -->
-            <a 
-                href={url("/")}
-                class="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) text-white rounded-(--radius-large) hover:bg-(--btn-content) transition-colors duration-200 font-medium"
-            >
-                <Icon is:inline name="material-symbols:home" class="text-xl" />
-                {i18n(I18nKey.backToHome)}
-            </a>
-            
-            <!-- 装饰性元素 -->
-            <div class="absolute top-4 left-4 opacity-10">
+
+            <div class="flex items-center gap-3 flex-wrap justify-center">
+                <a
+                    href={url("/")}
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-(--primary) text-white text-sm font-medium transition-all duration-200 hover:brightness-110 active:scale-95"
+                >
+                    <Icon is:inline name="material-symbols:home" class="text-lg" />
+                    回首页
+                </a>
+                <a
+                    href={url("/moments/")}
+                    class="btn-regular inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
+                >
+                    <Icon is:inline name="material-symbols:tips-and-updates" class="text-lg" />
+                    看看动态
+                </a>
+                <a
+                    href={url("/guestbook/")}
+                    class="btn-regular inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
+                >
+                    <Icon is:inline name="material-symbols:chat" class="text-lg" />
+                    留言告诉我
+                </a>
+            </div>
+
+            <div class="absolute top-6 left-6 opacity-8">
                 <Icon is:inline name="material-symbols:sentiment-sad" class="text-4xl text-(--primary)" />
             </div>
-            <div class="absolute bottom-4 right-4 opacity-10">
+            <div class="absolute bottom-6 right-6 opacity-8">
                 <Icon is:inline name="material-symbols:search-off" class="text-4xl text-(--primary)" />
             </div>
         </div>
@@ -50,11 +60,10 @@ import { url } from "@/utils/url-utils";
 </MainGridLayout>
 
 <style>
-    /* 添加一些动画效果 */
     .card-base {
         animation: fadeInUp 0.6s ease-out;
     }
-    
+
     @keyframes fadeInUp {
         from {
             opacity: 0;
@@ -64,11 +73,5 @@ import { url } from "@/utils/url-utils";
             opacity: 1;
             transform: translateY(0);
         }
-    }
-    
-    /* 按钮悬停效果 */
-    a:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
     }
 </style>

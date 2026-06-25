@@ -542,6 +542,25 @@ const relatedPosts = await getRelatedPosts(entry, 5);
 
   <RecommendedPost relatedPosts={relatedPosts} currentPostId={entry.id} />
 
+  <!-- 互动引导 -->
+  <div class="mt-6 mb-6 onload-animation">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-(--primary)/15 bg-(--primary)/6 p-5 dark:border-(--primary)/20 dark:bg-(--primary)/8">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="size-10 shrink-0 rounded-lg bg-(--primary)/12 flex items-center justify-center">
+          <Icon is:inline name="fa7-solid:comment-dots" class="text-lg text-(--primary)" />
+        </div>
+        <div class="min-w-0">
+          <div class="text-sm font-semibold text-neutral-800 dark:text-neutral-100">喜欢这篇文章？</div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">去留言板跟我说一声，或者分享你的想法和补充。</div>
+        </div>
+      </div>
+      <a href={url("/guestbook/")} class="btn-plain shrink-0 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium text-(--primary) transition-colors hover:bg-(--primary)/8">
+        <span>去留言板聊聊</span>
+        <Icon is:inline name="fa7-solid:arrow-right" class="text-[11px]" />
+      </a>
+    </div>
+  </div>
+
   <!-- 评论 -->
   {entry.data.comment && !entry.data.password && <Comment post={entry} />}
 </MainGridLayout>
