@@ -1,0 +1,37 @@
+---
+import WidgetLayout from "@components/common/WidgetLayout.astro";
+import type { WidgetComponentConfig } from "@/types/config";
+
+interface Props { class?: string; style?: string; widgetConfig?: WidgetComponentConfig; }
+const { class: className, style, widgetConfig } = Astro.props;
+const showTitle = widgetConfig?.showTitle !== false;
+
+const today = new Date();
+const dayOfWeek = today.getDay();
+
+const recommendations: Record<number, string[]> = {
+  0: ["今天适合整理博客", "写一篇碎碎念", "整理相册"],
+  1: ["今天适合读技术文章", "学一个新 npm 包", "整理代码片段"],
+  2: ["今天适合写代码到深夜", "研究 AI 动态", "分享一条心得"],
+  3: ["今天适合打 CS", "去洛克王国逛逛", "写游戏日常"],
+  4: ["今天适合回顾旧知识", "整理笔记", "更新 GitHub"],
+  5: ["今天适合放松打游戏", "整理照片", "录一段视频"],
+  6: ["今天适合休息充电", "看一部番", "整理下周计划"],
+};
+
+const tips = recommendations[dayOfWeek] || recommendations[0];
+const tip = tips[Math.floor(Math.random() * tips.length)];
+
+const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+---
+
+<WidgetLayout name="今日推荐" showTitle={showTitle} id="today-recommend" class={className} style={style}>
+  <div class="rounded-xl bg-(--primary)/6 px-4 py-4 text-center dark:bg-(--primary)/10">
+    <div class="text-[11px] text-neutral-400 dark:text-neutral-500 mb-2">
+      {weekdays[dayOfWeek]} · 今日推荐
+    </div>
+    <p class="text-sm font-medium text-neutral-800 dark:text-neutral-100 leading-relaxed">
+      {tip}
+    </p>
+  </div>
+</WidgetLayout>

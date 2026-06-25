@@ -100,7 +100,19 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	rightComponents: [
 		{
 			// 组件类型：天气预报组件
-			type: "weather",
+			type: "dailyQuote",
+		enable: true,
+		position: "top",
+		showOnPostPage: false,
+	},
+	{
+		type: "todayRecommend",
+		enable: true,
+		position: "top",
+		showOnPostPage: false,
+	},
+	{
+		type: "weather",
 			enable: true,
 			position: "top",
 			showOnPostPage: false,
