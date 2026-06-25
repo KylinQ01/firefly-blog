@@ -6,22 +6,20 @@ import { url } from "@/utils/url-utils";
 
 const currentYear = new Date().getFullYear();
 
-// 读取FooterConfig.html文件内容
 let customFooterHtml = "";
 if (footerConfig.enable) {
-	try {
-		const footerConfigPath = path.join(
-			process.cwd(),
-			"src",
-			"config",
-			"FooterConfig.html",
-		);
-		customFooterHtml = fs.readFileSync(footerConfigPath, "utf-8");
-		// 移除HTML注释
-		customFooterHtml = customFooterHtml.replace(/<!--[\s\S]*?-->/g, "").trim();
-	} catch (error) {
-		console.warn("FooterConfig.html文件读取失败:", error.message);
-	}
+  try {
+    const footerConfigPath = path.join(
+      process.cwd(),
+      "src",
+      "config",
+      "FooterConfig.html",
+    );
+    customFooterHtml = fs.readFileSync(footerConfigPath, "utf-8");
+    customFooterHtml = customFooterHtml.replace(/<!--[\s\S]*?-->/g, "").trim();
+  } catch (error) {
+    console.warn("FooterConfig.html 读取失败:", error.message);
+  }
 }
 ---
 
@@ -54,11 +52,28 @@ if (footerConfig.enable) {
         href={url("sitemap-index.xml")}>Sitemap</a
       >
     </div>
-  <!-- 已按站点要求隐藏 Powered by 链接 -->
-    <!-- 
-      注意：请勿随意修改或删除 "Powered by Astro & Firefly" 部分，这是对开源项目的尊重和支持。
-      如果您需要在底部增加内容，请在src/config/footerConfig.ts中修改enable属性为true，然后编辑src/config/FooterConfig.html文件。
-      您可以随意在src/config/FooterConfig.html中随意添加自定义内容，不需要修改Footer.astro文件。
-    -->
+    <div class="m-0.5 flex gap-2 justify-center flex-wrap">
+      <span>Powered by</span>
+      <a
+        class="transition link text-(--primary) font-medium"
+        target="_blank"
+        href="https://astro.build">Astro</a
+      >
+      <span aria-hidden="true">&</span>
+      <a
+        class="transition link text-(--primary) font-medium"
+        target="_blank"
+        href="https://github.com/CuteLeaf/Firefly">Firefly</a
+      >
+    </div>
+    <!-- 访客计数器 -->
+    <div id="busuanzi_container_site_uv" class="m-0.5 flex gap-2 justify-center flex-wrap text-xs text-neutral-400 dark:text-neutral-500">
+      <span>您是第</span>
+      <span id="busuanzi_value_site_uv">--</span>
+      <span>位来访者</span>
+    </div>
   </div>
 </div>
+
+<!-- 不蒜子访客计数器 -->
+<script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
