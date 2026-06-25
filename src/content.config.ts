@@ -40,6 +40,7 @@ const momentsCollection = defineCollection({
 		draft: z.boolean().optional().default(false),
 		tags: z.array(z.string()).optional().default([]),
 		images: z.array(z.string()).optional().default([]),
+		mood: z.enum(["happy", "coding", "gaming", "late-night", "thinking"]).optional().default("thinking"),
 	}),
 });
 

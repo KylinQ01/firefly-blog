@@ -1,6 +1,7 @@
 ---
 title: "洛克王国和代码都要慢慢来"
 published: 2026-06-24
+mood: "gaming"
 tags: ["洛克王国", "日常"]
 images: ["/gallery/luoke/微信图片_20260624193819_20_2.png"]
 ---

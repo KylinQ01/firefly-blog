@@ -11,7 +11,9 @@ export type WidgetComponentType =
 	| "music"
 	| "siteInfo"
 	| "weather"
-	| "dateCountdown";
+	| "dateCountdown"
+	| "dailyQuote"
+	| "todayRecommend";
 
 export type WidgetComponentConfig = {
 	type: WidgetComponentType; // 组件类型
